@@ -867,7 +867,6 @@ func (c apiClient) Do(ctx context.Context, req *http.Request) (*http.Response, [
 			Msg:  result.Error,
 		}
 	}
-	//warnings = result.Warnings
 	var allWarnings  api.Warnings
 	allWarnings = append(result.Warnings, warnings...)
 
