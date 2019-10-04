@@ -100,6 +100,7 @@ func marshalPointJSON(ptr unsafe.Pointer, stream *json.Stream) {
 	if abs != 0 {
 		if abs < 1e-6 || abs >= 1e21 {
 			fmt = 'e'
+			fmt = 'e'
 		}
 	}
 	buf = strconv.AppendFloat(buf, float64(p.Value), fmt, -1, 64)
@@ -827,7 +828,6 @@ func errorTypeAndMsgFor(resp *http.Response) (ErrorType, string) {
 
 func (c apiClient) Do(ctx context.Context, req *http.Request) (*http.Response, []byte, api.Warnings, error) {
 	resp, body, warnings, err := c.Client.Do(ctx, req)
-	append(warnings, body.warnings)
 	if err != nil {
 		return resp, body, warnings, err
 	}
@@ -867,8 +867,11 @@ func (c apiClient) Do(ctx context.Context, req *http.Request) (*http.Response, [
 			Msg:  result.Error,
 		}
 	}
+	//warnings = result.Warnings
+	var allWarnings  api.Warnings
+	allWarnings = append(result.Warnings, warnings...)
 
-	return resp, []byte(result.Data), warnings, err
+	return resp, []byte(result.Data), allWarnings, err
 
 }
 
